@@ -1,27 +1,58 @@
-import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Component } from 'react';
 import Appointments from './components/Appointments';
+import axios from 'axios'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
 
-function App() {
+class App extends Component {
 
-  const [appointments, setAppointments] = useState([]);
+  handleLogin = (data) => {
+    this.setState({
+      isLoggedIn: true,
+      user: data.user
+    })
+  }
 
-  useEffect( () => {
-    // Set server address url in package.json proxy
-    fetch('/api/appointments')
-      .then(response => response.json()
-        .then(data => {
-          setAppointments(data.appointments)
-          console.log(data.appointments)
-        })
-      )
-  }, [])
+  handleLogout = () => {
+    this.setState({
+      isLoggedIn: false,
+      user: {}
+    })
+  }
 
-  return (
-    <div className="App">
-     <Appointments appointments={appointments} />
-    </div>
-  );
+  // Send request to logged in route to check if user is logged in
+  loginStatus = () => {
+    axios.get('/logged_in', {withCredentials: true})
+      .then(response => (response.data.logged_in) ? this.handleLogin(response) : this.handleLogout() )
+      .catch(error => console.log('api errors:', error))
+  }
+  
+  componentDidMount() {
+    this.loginStatus()
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false,
+      user: {}
+    }
+  }
+
+  render() {
+    return (
+      <div className='App'>
+        <BrowserRouter>
+          <Routes>
+            <Route exact path='/' component={null}/>
+            <Route exact path='/login' component={null}/>
+            <Route exact path='/signup' component={null}/>
+          </Routes>
+        </BrowserRouter>
+      </div>
+    )
+  }
 }
 
 export default App;
