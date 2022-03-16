@@ -1,18 +1,27 @@
 import React, { useEffect, useState, Component } from 'react';
 import Appointments from './components/Appointments';
 import axios from 'axios'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Login from './components/Login';
-
+import Signup from './components/Signup';
 class App extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false,
+      user: {}
+    }
+  }
 
   handleLogin = (data) => {
     this.setState({
       isLoggedIn: true,
       user: data.user
     })
+    console.log("Logged In")
   }
 
   handleLogout = () => {
@@ -33,24 +42,17 @@ class App extends Component {
     this.loginStatus()
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedIn: false,
-      user: {}
-    }
-  }
 
   render() {
     return (
       <div className='App'>
           {/* <Navbar /> */}
         <BrowserRouter>
-          {/* <Home /> */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
+          <Switch>
+            <Route exact path="/"><Home isLoggedIn={this.isLoggedIn}/></Route>
+            <Route exact path="/login">{this.state.isLoggedIn ? <Redirect to="/" /> : <Login handleLogin={this.handleLogin} history={this.props.history} />}</Route>
+            <Route exact path="/signup">{this.state.isLoggedIn ? <Redirect to="/" /> : <Signup handleLogin={this.handleLogin} history={this.props.history} />} </Route>
+          </Switch>
 
         </BrowserRouter>
       </div>

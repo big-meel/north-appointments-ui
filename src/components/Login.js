@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 
 class Login extends Component {
   constructor(props) {
@@ -27,11 +27,10 @@ class Login extends Component {
       password: password
     }
 
-    axios.post('/login', {user}, {withCredentials: true})
+    axios.post('http://localhost:3001/api/login', {user})
       .then(response => {
         if (response.data.logged_in) {
           this.props.handleLogin(response.data)
-          this.redirect()
         } else {
           this.setState({
             errors: response.data.errors
@@ -43,7 +42,7 @@ class Login extends Component {
 
   redirect = () => {
     this.props.history.push('/')
-  }
+  } 
 
   handleErrors = () => {
     return (
@@ -59,6 +58,9 @@ class Login extends Component {
 
   render() {
     const {email, password} = this.state
+    if (this.state.isLoggedIn) {
+      <Redirect to="/" />
+    }
     return (
       <div>
         <h1>Log In</h1>

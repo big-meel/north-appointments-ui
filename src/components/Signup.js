@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import {Link, Redirect} from 'react-router-dom'
+
 
 class Signup extends Component {
   constructor(props) {
@@ -32,11 +34,10 @@ class Signup extends Component {
       password:  password,
       password_confirmation: password_confirmation
     }
-    axios.post('http://localhost:3001/patients', {user}, {withCredentials: true})
+    axios.post('http://localhost:3001/api/patients', {user})
       .then(response => {
-        if (response.data.status === 'created') {
+        if (response.statusText === 'Created') {
           this.props.handleLogin(response.data)
-          this.redirect()
         } else {
           this.setState({
             errors: response.data.errors
@@ -65,6 +66,9 @@ class Signup extends Component {
   render() {
     const {firstname, lastname, email, password, password_confirmation} =
       this.state
+    if (this.state.isLoggedIn) {
+      <Redirect to="/" />
+    }
     return (
       <div>
         <h1>Sign Up</h1>

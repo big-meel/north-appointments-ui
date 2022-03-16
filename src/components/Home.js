@@ -1,11 +1,9 @@
 import {Link} from 'react-router-dom'
 
 const Home = () => {
-  
-  const handleClick = () => {
-    console.log("hi")
-  }
-
+  // if (isLoggedIn) {
+  //   return <Link to='/logout'>Log Out</Link>
+  // }
   return ( 
     <div className="Home">
       <h2>Dashboard</h2>
