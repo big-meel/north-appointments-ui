@@ -1,3 +1,5 @@
+import {Link} from 'react-router-dom'
+
 const Home = () => {
   
   const handleClick = () => {
@@ -7,7 +9,9 @@ const Home = () => {
   return ( 
     <div className="Home">
       <h2>Dashboard</h2>
-      <button onClick={handleClick}>Click Me</button>
+      <Link to='/login'>Log In</Link>
+      <br></br>
+      <Link to='/signup'>Sign Up</Link>
     </div>
    );
 }

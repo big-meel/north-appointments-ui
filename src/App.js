@@ -4,6 +4,7 @@ import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import Login from './components/Login';
 
 class App extends Component {
 
@@ -23,7 +24,7 @@ class App extends Component {
 
   // Send request to logged in route to check if user is logged in
   loginStatus = () => {
-    axios.get('/logged_in', {withCredentials: true})
+    axios.get('http://localhost:3001/api/logged_in')
       .then(response => (response.data.logged_in) ? this.handleLogin(response) : this.handleLogout() )
       .catch(error => console.log('api errors:', error))
   }
@@ -43,12 +44,14 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
+          {/* <Navbar /> */}
         <BrowserRouter>
+          {/* <Home /> */}
           <Routes>
-            <Route exact path='/' component={null}/>
-            <Route exact path='/login' component={null}/>
-            <Route exact path='/signup' component={null}/>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
+
         </BrowserRouter>
       </div>
     )
