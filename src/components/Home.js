@@ -1,9 +1,17 @@
 import {Link} from 'react-router-dom'
 
-const Home = () => {
-  // if (isLoggedIn) {
-  //   return <Link to='/logout'>Log Out</Link>
-  // }
+const Home = ( {isLoggedIn} ) => {
+  console.log(isLoggedIn)
+  if (isLoggedIn) {
+    console.log("hi")
+    // return 
+    return (
+      <>
+        <h2>Dashboard yo</h2>
+        <Link to='/logout'>Log Out</Link>
+      </>
+    )
+  }
   return ( 
     <div className="Home">
       <h2>Dashboard</h2>

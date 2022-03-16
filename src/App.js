@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Logout from './components/Logout';
 class App extends Component {
   
   constructor(props) {
@@ -49,7 +50,8 @@ class App extends Component {
           {/* <Navbar /> */}
         <BrowserRouter>
           <Switch>
-            <Route exact path="/"><Home isLoggedIn={this.isLoggedIn}/></Route>
+            <Route exact path="/"><Home isLoggedIn={this.state.isLoggedIn}/></Route>
+            <Route exact path="/logout"><Logout handleLogout={this.handleLogout}/></Route>
             <Route exact path="/login">{this.state.isLoggedIn ? <Redirect to="/" /> : <Login handleLogin={this.handleLogin} history={this.props.history} />}</Route>
             <Route exact path="/signup">{this.state.isLoggedIn ? <Redirect to="/" /> : <Signup handleLogin={this.handleLogin} history={this.props.history} />} </Route>
           </Switch>
