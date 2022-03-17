@@ -5,7 +5,7 @@ import { axios } from "axios";
 const Login = ({handleLogin}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState('')
+  const [errors, setErrors] = useState([])
 
   const handleChange = (e) => {
     const {name, value} = e.target
@@ -40,16 +40,16 @@ const Login = ({handleLogin}) => {
 
   }
 
-  handleErrors = () => {
+  const handleErrors = () => {
     return (
       <div>
         <ul>
-          {this.state.errors.map(error => {
+          {errors.map(error => {
             return <li key={error}>{error}</li>
           })}
         </ul>
       </div>
-)
+    )
   }
 
 
