@@ -1,48 +1,3 @@
-// import React, { useEffect, useState, Component } from 'react';
-// import Appointments from './components/Appointments';
-// import axios from 'axios'
-// import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-// import Navbar from './components/Navbar';
-// import Home from './components/Home';
-// import Login from './components/Login';
-// import Signup from './components/Signup';
-// import Logout from './components/Logout';
-// class App extends Component {
-  
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       isLoggedIn: false,
-//       user: {}
-//     }
-//   }
-
-//   handleLogin = (data) => {
-//     this.setState({
-//       isLoggedIn: true,
-//       user: data.user
-//     })
-//     console.log("Logged In")
-//   }
-
-//   handleLogout = () => {
-//     this.setState({
-//       isLoggedIn: false,
-//       user: {}
-//     })
-//   }
-
-//   // Send request to logged in route to check if user is logged in
-//   loginStatus = () => {
-//     axios.get('http://localhost:3001/api/logged_in')
-//       .then(response => (response.data.logged_in) ? this.handleLogin(response) : this.handleLogout() )
-//       .catch(error => console.log('api errors:', error))
-//   }
-  
-//   componentDidMount() {
-//     this.loginStatus()
-//   }
-
 
 //   render() {
 //     return (
@@ -62,11 +17,39 @@
 //   }
 // }
 
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import axios from 'axios';
 
 function App() {
+  const [isLoggedIn, setStatus] = useState(false)
+  const [user, setUser] = useState({})
+
+  const handleLogin = (data) => {
+    setStatus(true)
+    setUser(data.user)
+    console.log("Logged in Successfully")
+    console.log(data.user.firstname)
+  }
+
+  const handleLogout = () => {
+    setStatus(false)
+    setUser({})
+    console.log("Logged out Successfully")
+  }
+
+  // Use use effect hook to check if user is logged in
+  const checkLoginStatus = () => {
+    axios.get('http://localhost:3001/api/logged_in')
+      .then((response) => (response.data.logged_in) ? handleLogin(response) : handleLogout())
+      .catch(error => console.log('api errors:', error))
+  }
+
+  useEffect(() => {
+    checkLoginStatus()
+  }, [])
+
 
   return (
     <div className='App'>

@@ -1,48 +1,44 @@
-import React, {Component} from "react";
-import axios from "axios";
-import {Link, Redirect} from 'react-router-dom'
+import React, { useState } from "react";
+import { axios } from "axios";
 
-class Login extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      email: '',
-      password: '',
-      errors: ''
+
+const Login = ({handleLogin}) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState('')
+
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    switch (name) {
+      case "email":
+        setEmail(value)
+        break
+      case "password":
+        setPassword(value)
+        break
+      default:
+        console.log("Nothing Happened")
     }
   }
 
-  handleChange = (e) => {
-    const {name, value} = e.target
-    this.setState({
-      [name]: value
-    })
-  }
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    const {email, password} = this.state
     let user = {
       email: email,
       password: password
     }
 
     axios.post('http://localhost:3001/api/login', {user})
-      .then(response => {
-        if (response.data.logged_in) {
-          this.props.handleLogin(response.data)
-        } else {
-          this.setState({
-            errors: response.data.errors
-          })
-        }
-      })
-      .catch(error => console.log('api errors:', error))
-  }
+    .then(response => {
+      if (response.data.logged_in) {
+        handleLogin(response.data)
+      } else {
+        setErrors(response.data.errors)
+      }
+    })
+    .catch(error => console.log('api errors:', error))
 
-  redirect = () => {
-    this.props.history.push('/')
-  } 
+  }
 
   handleErrors = () => {
     return (
@@ -53,42 +49,37 @@ class Login extends Component {
           })}
         </ul>
       </div>
-    )
+)
   }
 
-  render() {
-    const {email, password} = this.state
-    if (this.state.isLoggedIn) {
-      <Redirect to="/" />
-    }
-    return (
+
+  return (
+    <div>
+      <h1>Log In</h1>
+      <form onSubmit={handleSubmit}>
+        <input 
+        placeholder="email"
+        type="text"
+        name="email"
+        value={email}
+        onChange={handleChange}
+      />
+      <input
+        placeholder="password"
+        type="password"
+        name="password"
+        value={password}
+        onChange={handleChange}
+      />
+      <button placeholder="Submit" type="submit">Log In</button>
       <div>
-        <h1>Log In</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input 
-            placeholder="email"
-            type="text"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <button placeholder="Submit" type="submit">Log In</button>
-          <div>
-            Not yet Signed Up? 
-            <Link to='/signup'>Sign Up</Link>
-          </div>
+        Not yet Signed Up? 
+        <Link to='/signup'>Sign Up</Link>
+      </div>
 
         </form>
-      </div>
-    )
-  }
+    </div>
+    );
 }
-
+ 
 export default Login;
