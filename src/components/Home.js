@@ -1,23 +1,20 @@
-import {Link} from 'react-router-dom'
+import {useState} from 'react'
+import AppointmentList from './AppointmentList';
 
-const Home = ( {isLoggedIn} ) => {
-  console.log(isLoggedIn)
-  if (isLoggedIn) {
-    console.log("hi")
-    // return 
-    return (
-      <>
-        <h2>Dashboard yo</h2>
-        <Link to='/logout'>Log Out</Link>
-      </>
-    )
-  }
+const Home = () => {
+
+  const [appointments, setAppointments] = useState([
+    { id: 1, date: "2022-03-22" },
+    { id: 2, date: "2022-03-25" }
+  ])
+
+  const [user, setUser] = useState(
+    {id: 1, name: "Jameel"}
+  )
+
   return ( 
-    <div className="Home">
-      <h2>Dashboard</h2>
-      <Link to='/login'>Log In</Link>
-      <br></br>
-      <Link to='/signup'>Sign Up</Link>
+    <div className="home">
+      <AppointmentList appointments={appointments} user={user}/>
     </div>
    );
 }
