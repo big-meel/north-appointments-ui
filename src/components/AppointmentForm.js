@@ -20,7 +20,6 @@ const AppointmentForm = ({user}) => {
 
     axios.post(`https://north-appointments-api.herokuapp.com/api/appointments`, {appointment})
     .then(response => {
-      console.log(response)
       setIsLoading(false)
       history.push('/') // Change to Appointments
     })

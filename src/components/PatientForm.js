@@ -26,11 +26,9 @@ const PatientForm = ({user, handleLogin}) => {
       country: country,
       contact_number: contactNumber
     }
-    console.log(user)
 
     axios.put(`https://north-appointments-api.herokuapp.com/api/patients/${id}`, {user})
     .then(response => {
-      console.log(response)
       if (response.statusText === 'OK') {
         handleLogin(response.data)
         history.push('/patient')
