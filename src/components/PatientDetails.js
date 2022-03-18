@@ -7,7 +7,7 @@ const PatientDetails = ({user, handleLogout}) => {
 
   const handleClick = () => {
     window.confirm("Are you sure?")
-    axios.delete(`http://localhost:3001/api/patients/${user.id}`)
+    axios.delete(`https://north-appointments-api.herokuapp.com/api/patients/${user.id}`)
     .then(() => {
       handleLogout()
       history.push("/")

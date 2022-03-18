@@ -17,7 +17,7 @@ const AppointmentList = ( {user} ) => {
   useEffect(() => {
     if (user) {
 
-      axios.get('http://localhost:3001/api/appointments', {params: {patient_id: user.id}})
+      axios.get('https://north-appointments-api.herokuapp.com/api/appointments', {params: {patient_id: user.id}})
       .then(response => {
         setAppointments(response.data.appointments) 
         setIsLoading(false)

@@ -18,7 +18,7 @@ const AppointmentForm = ({user}) => {
 
     setIsLoading(true)
 
-    axios.post(`http://localhost:3001/api/appointments`, {appointment})
+    axios.post(`https://north-appointments-api.herokuapp.com/api/appointments`, {appointment})
     .then(response => {
       console.log(response)
       setIsLoading(false)

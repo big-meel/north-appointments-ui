@@ -28,7 +28,7 @@ const PatientForm = ({user, handleLogin}) => {
     }
     console.log(user)
 
-    axios.put(`http://localhost:3001/api/patients/${id}`, {user})
+    axios.put(`https://north-appointments-api.herokuapp.com/api/patients/${id}`, {user})
     .then(response => {
       console.log(response)
       if (response.statusText === 'OK') {

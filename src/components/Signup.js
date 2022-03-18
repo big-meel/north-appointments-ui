@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, {useState} from "react";
+import { useHistory } from "react-router-dom";
 
 const Signup = ({handleLogin}) => {
   const [firstname, setFirstname] = useState('')
@@ -8,6 +9,7 @@ const Signup = ({handleLogin}) => {
   const [password, setPassword] = useState('')
   const [password_confirmation, setConfirmation] = useState('')
   const [errors, setErrors] = useState([])
+  const history = useHistory()
 
 
   const handleChange = (e, fun) => {
@@ -24,10 +26,11 @@ const Signup = ({handleLogin}) => {
       password_confirmation, password_confirmation
     }
 
-    axios.post('http://localhost:3001/api/patients', {user})
+    axios.post('https://north-appointments-api.herokuapp.com/api/patients', {user})
     .then(response => {
       if (response.statusText === 'Created') {
         handleLogin(response.data)
+        history.push('/')
       } else {
         setErrors(response.data.errors)
       }

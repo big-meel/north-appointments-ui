@@ -16,7 +16,7 @@ const Login = ({handleLogin}) => {
       password: password
     }
 
-    axios.post('http://localhost:3001/api/login', {user})
+    axios.post('http://north-appointments-api.herokuapp.com/api/login', {user})
     .then(response => {
       if (response.data.logged_in) {
         handleLogin(response.data)

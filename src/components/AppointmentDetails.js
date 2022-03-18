@@ -9,14 +9,14 @@ const AppointmentDetails = ({user}) => {
   const history = useHistory()
   
   const handleCick = () => {
-    axios.delete(`http://localhost:3001/api/appointments/${id}`)
+    axios.delete(`http://north-appointments-api.herokuapp.com//api/appointments/${id}`)
     .then(() => {
       history.push('/')
     })
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/appointments/${id}`)
+    axios.get(`https://north-appointments-api.herokuapp.com/api/appointments/${id}`)
     .then(response => setAppointment(response.data))
   }, [])
 
