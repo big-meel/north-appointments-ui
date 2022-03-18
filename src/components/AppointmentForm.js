@@ -1,18 +1,19 @@
 import axios from "axios";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const AppointmentForm = ({user}) => {
   const [date, setDate] = useState('')
   const [description, setDesc] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     let appointment = {
       date: date,
       description: description,
-      user_id: 18
+      user_id: user.id
     }
 
     setIsLoading(true)
@@ -21,6 +22,7 @@ const AppointmentForm = ({user}) => {
     .then(response => {
       console.log(response)
       setIsLoading(false)
+      history.push('/') // Change to Appointments
     })
   }
 
@@ -32,7 +34,7 @@ const AppointmentForm = ({user}) => {
         <input
           type="date" 
           name="date"
-          min={new Date}
+          min={new Date()}
           value={date}
           onChange={(e) => setDate(e.target.value)}
           required

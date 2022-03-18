@@ -1,32 +1,39 @@
 import {useState} from 'react'
+import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 
-const PatientForm = ({user}) => {
-  const [firstname, setFirstname] = useState('')
-  const [middlename, setMiddleName] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [email, setEmail] = useState('')
-  const [dob, setDOB] = useState('')
-  const [country, setCountry] = useState('')
-  const [contactNumber, setContactNumber] = useState('')
+const PatientForm = ({user, handleLogin}) => {
+  const [firstname, setFirstname] = useState(user.firstname)
+  const [middlename, setMiddleName] = useState(user.middlename)
+  const [lastname, setLastname] = useState(user.lastname)
+  const [email, setEmail] = useState(user.email)
+  const [dob, setDOB] = useState(user.date_of_birth)
+  const [country, setCountry] = useState(user.country)
+  const [contactNumber, setContactNumber] = useState(user.contact_number)
   const [errors, setErrors] = useState([])
 
+  const history = useHistory()
+  const id = user.id
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    let user_data = {
+    let user = {
       firstname: firstname,
+      middlename: middlename,
       lastname: lastname,
       email: email,
       date_of_birth: dob,
       country: country,
       contact_number: contactNumber
     }
+    console.log(user)
 
-    axios.put(`http://localhost:3001/api/patients/${user.id}`, {user_data})
+    axios.put(`http://localhost:3001/api/patients/${id}`, {user})
     .then(response => {
-      if (response.statusText === 'Updated') {
-        // handleLogin(response.data)
-        // Persist user state
+      console.log(response)
+      if (response.statusText === 'OK') {
+        handleLogin(response.data)
+        history.push('/patient')
       } else {
         setErrors(response.data.errors)
       }
@@ -37,8 +44,8 @@ const PatientForm = ({user}) => {
 
   return ( 
     <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
+      <h1>Profile</h1>
         <input
           placeholder='firstname'
           type='text'
@@ -90,7 +97,7 @@ const PatientForm = ({user}) => {
           onChange={(e) => setContactNumber(e.target.value)}
         />
         <button placeholder='Submit' type='submit'>
-          Sign Up
+          Update
         </button>
       </form>
     </div>

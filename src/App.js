@@ -8,6 +8,9 @@ import Logout from './components/Logout';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import AppointmentDetails from './components/AppointmentDetails';
 import AppointmentForm from './components/AppointmentForm';
+import AppointmentList from './components/AppointmentList';
+import PatientDetails from './components/PatientDetails';
+import PatientForm from './components/PatientForm'
 
 function App() {
   const [user, setUser] = useState('')
@@ -49,6 +52,9 @@ function App() {
             <Route path="/create">
               <AppointmentForm user={user}/>
             </Route>
+            <Route exact path="/appointments">
+              <AppointmentList user={user}/>
+            </Route>
             <Route path="/appointments/:id">
               <AppointmentDetails user={user}/>
             </Route>
@@ -61,6 +67,13 @@ function App() {
             <Route path="/signup">
               <Signup handleLogin={handleLogin}/>
             </Route>
+            <Route exact path="/patient">
+              <PatientDetails user={user} handleLogout={handleLogout}/>
+            </Route>
+            <Route path="/patient/edit">
+              <PatientForm user={user} handleLogin={handleLogin}/>
+            </Route>
+
           
           </Switch>
         </div>

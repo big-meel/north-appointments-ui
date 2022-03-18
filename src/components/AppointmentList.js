@@ -1,19 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-const AppointmentList = ( { appointments, filter, user, timing} ) => {
+const AppointmentList = ( {user} ) => {
 
-  const filteredAppointments = filter(appointments)
+  // const filteredAppointments = filter(appointments)
+  const [appointments, setAppointments] = useState([])
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const current_date = new Date()
+
   const formatDate = (date) => {
     let dateObject = new Date(date)
     return dateObject.toLocaleString()
   }  
 
+  useEffect(() => {
+    if (user) {
+
+      axios.get('http://localhost:3001/api/appointments', {params: {patient_id: user.id}})
+      .then(response => {
+        setAppointments(response.data.appointments) 
+        setIsLoading(false)
+        setError('')
+      })
+      .catch(err => {
+        console.log('api errors:', err)
+        setError(err.message)
+        setIsLoading(true)
+      })
+    }
+  }, [])
+
+
   return (
     <div className='app-list'>
-      <h2> {user.firstname}'s {timing} Appointment </h2>
-
-      {filteredAppointments.map((app) => (
+      <h2> {user.firstname}'s Appointments </h2>
+      {isLoading && <p>Loading...</p>}
+      {appointments.map((app) => (
         <div className="app-preview" key={app.id}>
           <Link to={`/appointments/${app.id}`}>
             <h3>{ formatDate(app.date) }</h3>

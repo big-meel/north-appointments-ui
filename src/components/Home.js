@@ -40,10 +40,7 @@ const Home = ({user, handleLogin}) => {
   return ( 
     <div className="home">
       {!user && <Login handleLogin={handleLogin}/>}
-      {/* Upcoming Appointments */}
-      {/* {appointments && user && <AppointmentList appointments={appointments} filter={filterUpcomingAppointments} user={user} timing={"Upcoming"}/>} */}
-      {/* Past Appointments */}
-      {/* {appointments && user && <AppointmentList appointments={appointments} filter={filterPastAppointments} user={user} timing={"Past"}/>} */}
+      {user && <AppointmentList user={user}/>}
     </div>
    );
 }
