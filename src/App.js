@@ -2,43 +2,70 @@ import React, {useState, useEffect} from 'react'
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import axios from 'axios';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import Logout from './components/Logout';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import AppointmentDetails from './components/AppointmentDetails';
+import AppointmentForm from './components/AppointmentForm';
 
 function App() {
-  const [isLoggedIn, setStatus] = useState(false)
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState('')
 
+  
   const handleLogin = (data) => {
-    setStatus(true)
+    const parsedUser = JSON.stringify(data.user)
     setUser(data.user)
-    console.log("Logged in Successfully")
-    console.log(data.user.firstname)
+    localStorage.setItem("user", parsedUser)
   }
-
+  
   const handleLogout = () => {
-    setStatus(false)
-    setUser({})
+    setUser('')
+    localStorage.removeItem("user")
     console.log("Logged out Successfully")
   }
-
-  // Use use effect hook to check if user is logged in
-  const checkLoginStatus = () => {
-    axios.get('http://localhost:3001/api/logged_in')
-      .then((response) => (response.data.logged_in) ? handleLogin(response) : handleLogout())
-      .catch(error => console.log('api errors:', error))
-  }
-
+  
   useEffect(() => {
-    checkLoginStatus()
+    const loggedInUser = localStorage.getItem("user")
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser)
+      setUser(foundUser)
+    }
   }, [])
 
 
+
+
   return (
-    <div className='App'>
-      <Navbar />
-      <div className='content'>
-        <Home />
+    <Router>
+      <div className='App'>
+        <Navbar user={user}/>
+        <div className='content'>
+          <Switch>
+
+            <Route exact path="/">
+              <Home user={user} handleLogin={handleLogin} />
+            </Route>
+            <Route path="/create">
+              <AppointmentForm user={user}/>
+            </Route>
+            <Route path="/appointments/:id">
+              <AppointmentDetails user={user}/>
+            </Route>
+            <Route path="/login">
+              <Login handleLogin={handleLogin}/>
+            </Route>
+            <Route path="/logout">
+              <Logout handleLogout={handleLogout}/>
+            </Route>
+            <Route path="/signup">
+              <Signup handleLogin={handleLogin}/>
+            </Route>
+          
+          </Switch>
+        </div>
       </div>
-    </div>
+    </Router>
   )
 }
 

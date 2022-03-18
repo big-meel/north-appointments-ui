@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { axios } from "axios";
+import axios  from "axios";
+import { Link } from "react-router-dom";
 
 
 const Login = ({handleLogin}) => {
@@ -7,19 +8,6 @@ const Login = ({handleLogin}) => {
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState([])
 
-  const handleChange = (e) => {
-    const {name, value} = e.target
-    switch (name) {
-      case "email":
-        setEmail(value)
-        break
-      case "password":
-        setPassword(value)
-        break
-      default:
-        console.log("Nothing Happened")
-    }
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -54,7 +42,7 @@ const Login = ({handleLogin}) => {
 
 
   return (
-    <div>
+    <div className="form">
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <input 
@@ -62,14 +50,14 @@ const Login = ({handleLogin}) => {
         type="text"
         name="email"
         value={email}
-        onChange={handleChange}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         placeholder="password"
-        type="password"
-        name="password"
+        type='password'
+        name='password'
         value={password}
-        onChange={handleChange}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <button placeholder="Submit" type="submit">Log In</button>
       <div>

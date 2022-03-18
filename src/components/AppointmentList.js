@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const AppointmentList = ( { appointments, filter, user, timing} ) => {
 
@@ -10,12 +11,17 @@ const AppointmentList = ( { appointments, filter, user, timing} ) => {
 
   return (
     <div className='app-list'>
-      <h2> {user.name}'s {timing} Appointment </h2>
+      <h2> {user.firstname}'s {timing} Appointment </h2>
+
       {filteredAppointments.map((app) => (
         <div className="app-preview" key={app.id}>
-          <h3>{ formatDate(app.date) }</h3>
+          <Link to={`/appointments/${app.id}`}>
+            <h3>{ formatDate(app.date) }</h3>
+            <p> Click for details </p>
+          </Link>
         </div>
       ))}
+
     </div>
   )
 }

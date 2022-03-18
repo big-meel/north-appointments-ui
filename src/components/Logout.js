@@ -4,13 +4,13 @@ import {Link, Redirect} from 'react-router-dom'
 
 const Logout = ({handleLogout}) => {
 
-  const handleClick = () => {
-    // Logout user
-    handleLogout()
-  } 
 
   return ( 
-    <button onClick={handleClick}>Logout</button>
+    <div>
+      { handleLogout() }
+      Logged Out Successfully
+
+    </div>
    );
 }
  
