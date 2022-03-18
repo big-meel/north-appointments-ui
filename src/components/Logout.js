@@ -1,15 +1,15 @@
-import React, {Component} from "react";
-import axios from "axios";
-import {Link, Redirect} from 'react-router-dom'
+import React from "react";
+import { useHistory } from "react-router-dom";
 
 const Logout = ({handleLogout}) => {
 
+  const history = useHistory()
 
   return ( 
     <div>
       { handleLogout() }
       Logged Out Successfully
-
+      {history.push('/')}
     </div>
    );
 }

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import axios from 'axios';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Logout from './components/Logout';
@@ -11,10 +10,15 @@ import AppointmentForm from './components/AppointmentForm';
 import AppointmentList from './components/AppointmentList';
 import PatientDetails from './components/PatientDetails';
 import PatientForm from './components/PatientForm'
+import AppointmentHistory from './components/AppointmentHistory';
 
 function App() {
   const [user, setUser] = useState('')
 
+  const filterPastAppointments = (appointments) => {
+    let current_date = new Date()
+    return appointments.filter(app => (new Date(app.date)) <= current_date)
+  }
   
   const handleLogin = (data) => {
     const parsedUser = JSON.stringify(data.user)
@@ -36,9 +40,6 @@ function App() {
     }
   }, [])
 
-
-
-
   return (
     <Router>
       <div className='App'>
@@ -51,6 +52,9 @@ function App() {
             </Route>
             <Route path="/create">
               <AppointmentForm user={user}/>
+            </Route>
+            <Route path="/history">
+              <AppointmentHistory user={user} filter={filterPastAppointments}/>
             </Route>
             <Route exact path="/appointments">
               <AppointmentList user={user}/>

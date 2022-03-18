@@ -1,25 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { useHistory } from "react-router-dom"
 
-const AppointmentList = ( {user} ) => {
-
-  // const filteredAppointments = filter(appointments)
+const AppointmentHistory = ({user, filter}) => {
   const [appointments, setAppointments] = useState([])
-  const [error, setError] = useState('')
+  const [filteredAppointments, setFiltered] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+  const history = useHistory()
 
   const formatDate = (date) => {
     let dateObject = new Date(date)
     return dateObject.toLocaleString()
   }  
 
+  const handleClick = (e) => {
+    e.preventDefault()
+    history.push('/appointments')
+  }
+  
   useEffect(() => {
     if (user) {
 
       axios.get('http://localhost:3001/api/appointments', {params: {patient_id: user.id}})
       .then(response => {
-        setAppointments(response.data.appointments) 
+        setAppointments(response.data.appointments)
+        setFiltered(filter(appointments)) 
         setIsLoading(false)
         setError('')
       })
@@ -30,25 +36,19 @@ const AppointmentList = ( {user} ) => {
       })
     }
   }, [])
-
-
-  return (
-    <div className='app-list'>
-      <h2> {user.firstname}'s Appointments </h2>
+  
+  return ( 
+    <div className="app-list">
+      <h2>Past Appointments</h2>
       {isLoading && <p>Loading...</p>}
-      {appointments.map((app) => (
+      {filteredAppointments.map((app) => (
         <div className="app-preview" key={app.id}>
-          <Link to={`/appointments/${app.id}`}>
             <h3>{ formatDate(app.date) }</h3>
-            <p> Click for details </p>
-          </Link>
-          <br/><br/>
         </div>
       ))}
-
-    <Link to="/history">See Past Appointments</Link>
+      <button onClick={handleClick}>Back</button>
     </div>
-  )
+   );
 }
-
-export default AppointmentList;
+ 
+export default AppointmentHistory;
