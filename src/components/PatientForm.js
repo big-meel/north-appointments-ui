@@ -36,12 +36,16 @@ const PatientForm = ({user, handleLogin}) => {
         setErrors(response.data.errors)
       }
     })
-    .catch(error => console.log('api errors:', error))
+    .catch(error => {
+      console.log('api errors:', error)
+      setErrors(response.data.errors)
+    })
   }
 
 
   return ( 
     <div>
+      {errors && <p> Errors: {errors}</p>}
       <form className="form" onSubmit={handleSubmit}>
       <h1>Profile</h1>
         <input
