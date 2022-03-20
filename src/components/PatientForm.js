@@ -38,7 +38,7 @@ const PatientForm = ({user, handleLogin}) => {
     })
     .catch(error => {
       console.log('api errors:', error)
-      setErrors(response.data.errors)
+      setErrors(error)
     })
   }
 

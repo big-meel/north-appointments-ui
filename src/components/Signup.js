@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useHistory } from "react-router-dom";
 
 const Signup = ({handleLogin}) => {
@@ -8,13 +8,9 @@ const Signup = ({handleLogin}) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password_confirmation, setConfirmation] = useState('')
+  const [ip_address, setIpAddress] = useState('')
   const [errors, setErrors] = useState([])
   const history = useHistory()
-
-
-  const handleChange = (e, fun) => {
-    fun(e.target.value)
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -23,7 +19,8 @@ const Signup = ({handleLogin}) => {
       lastname: lastname,
       email: email,
       password: password,
-      password_confirmation, password_confirmation
+      password_confirmation: password_confirmation,
+      ip_address: ip_address
     }
 
     axios.post('https://north-appointments-api.herokuapp.com/api/patients', {user})
@@ -37,6 +34,14 @@ const Signup = ({handleLogin}) => {
     })
     .catch(error => console.log('api errors:', error))
   }
+
+  useEffect(() => {
+    axios.get('https://api.ipify.org', {params: {format: 'json'}})
+    .then(response => {
+      setIpAddress(response.data.ip)
+      console.log(ip_address)
+    })
+  })
 
   const handleErrors = () => {
     return (
@@ -89,6 +94,11 @@ const Signup = ({handleLogin}) => {
           name='password_confirmation'
           value={password_confirmation}
           onChange={(e) => setConfirmation(e.target.value)}
+        />
+        <input
+          type='hidden'
+          name='ip_address'
+          value={ip_address}
         />
         <button placeholder='Submit' type='submit'>
           Sign Up
