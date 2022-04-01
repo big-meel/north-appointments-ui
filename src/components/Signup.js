@@ -83,14 +83,14 @@ const Signup = ({handleLogin}) => {
         />
         <input
           placeholder='password'
-          type='text'
+          type='password'
           name='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
           placeholder='password_confirmation'
-          type='text'
+          type='password'
           name='password_confirmation'
           value={password_confirmation}
           onChange={(e) => setConfirmation(e.target.value)}
